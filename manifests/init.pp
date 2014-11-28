@@ -1,7 +1,20 @@
 # == Class: dirsrv
 #
-# This class installs and configures 389 Directory Server. Support for 
-# post-install configuration management is very limited at this point.
+# This class installs and configures 389 Directory Server.
+#
+# Support for post-install configuration management is very limited at this 
+# point:
+#
+# - Creating or monitoring additional Directory Server instances is not 
+#   supported
+# - Creating (separate) Config Directory Server instances is not supported
+# - Updating the Directory/Admin Server configuration is not supported
+#
+# In theory Puppet could just run "setup-ds-admin" again with the "-u" flag to 
+# reconfigure some aspects of 389-ds. As doing so could potentially break the 
+# installation, so the process is not automated at this point. Cleanup after a 
+# disaster would involve lots of manual work or the complete removal of 389-ds 
+# packages, files and directories.
 #
 # Many of the class parameters define the contents of the silent-install.inf 
 # file. For details on the parameters look here:
@@ -13,13 +26,6 @@
 # some environments:
 #
 # <https://access.redhat.com/documentation/en-US/Red_Hat_Directory_Server/9.0/html/Installation_Guide/Preparing_for_a_Directory_Server_Installation-Considerations.html#Preparing_for_a_Directory_Server_Installation-Port_Number>
-#
-# Currently this module has some limitations:
-#
-# - Creating or monitoring additional Directory Server instances is not 
-#   supported
-# - Creating (separate) Config Directory Server instances is not supported
-# - Updating the Directory/Admin Server configuration is not supported
 #
 # == Parameters
 #
