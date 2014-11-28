@@ -10,8 +10,8 @@ class dirsrv::params {
         'Debian': {
             $package_name = '389-ds'
             $config_dir = '/etc/dirsrv'
-            $suite_spot_user_id = 'nobody'
-            $suite_spot_group = 'nogroup'
+            $suite_spot_user_id = 'dirsrv'
+            $suite_spot_group = 'dirsrv'
             $piddir = '/var/run/dirsrv'
             $dir_service_name = 'dirsrv'
             $dir_service_start = "/usr/sbin/service $dir_service_name start"
