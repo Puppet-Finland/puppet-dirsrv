@@ -16,10 +16,10 @@ define dirsrv::config::schema
 {
     include dirsrv::params
 
-    file { "${modulename}-${basename}.schema":
+    file { "${modulename}-${basename}.ldif":
         ensure  => present,
-        name    => "${::dirsrv::params::config_dir}/slapd-${::dirsrv::config::serveridentifier}/schema/${basename}.schema",
-        content => template("${modulename}/${basename}.erb"),
+        name    => "${::dirsrv::params::config_dir}/slapd-${::dirsrv::config::serveridentifier}/schema/${basename}.ldif",
+        content => template("${modulename}/${basename}.ldif.erb"),
         owner   => "${::dirsrv::params::suite_spot_user_id}",
         group   => "${::dirsrv::params::suite_spot_group}",
         mode    => 600,
