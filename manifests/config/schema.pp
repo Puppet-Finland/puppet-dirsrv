@@ -23,7 +23,7 @@ define dirsrv::config::schema
         owner   => "${::dirsrv::params::suite_spot_user_id}",
         group   => "${::dirsrv::params::suite_spot_group}",
         mode    => 600,
-        require => Class['monit::config'],
-        notify  => Class['monit::service'],
+        require => Class['dirsrv::config'],
+        notify  => Class['dirsrv::service'],
     }
 }
