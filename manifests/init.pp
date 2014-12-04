@@ -59,6 +59,9 @@
 #   Admin username for the Admin Server. Defaults to 'admin'.
 # [*server_admin_pwd*]
 #   Password for the Admin Server admin user. No default value.
+# [*allow_anonymous_access*]
+#   Level of anonymous access to allow. Valid values 'on', 'off' and 'rootdse'. 
+#   Defaults to 'rootdse'.
 # [*dirsrv_allow_ipv4_address*]
 #   IPv4 address/subnet from which to allow connections to the Directory Server. 
 #   Use 'any' for any address. Defaults to '127.0.0.1'.
@@ -100,6 +103,7 @@ class dirsrv
     $admin_port = 9830,
     $server_admin_id = 'admin',
     $server_admin_pwd,
+    $allow_anonymous_access = 'rootdse',
     $dirsrv_allow_ipv4_address = '127.0.0.1',
     $dirsrv_allow_ipv6_address = '::1',
     $admin_srv_allow_ipv4_address = '127.0.0.1',
@@ -129,6 +133,7 @@ if hiera('manage_dirsrv', 'true') != 'false' {
             admin_port => $admin_port,
             server_admin_id => $server_admin_id,
             server_admin_pwd => $server_admin_pwd,
+            allow_anonymous_access => $allow_anonymous_access,
         }
     }
 

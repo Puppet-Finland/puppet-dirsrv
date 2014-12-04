@@ -18,7 +18,8 @@ class dirsrv::config
     $admin_bind_ip,
     $admin_port,
     $server_admin_id,
-    $server_admin_pwd
+    $server_admin_pwd,
+    $allow_anonymous_access
 
 ) inherits dirsrv::params
 {
@@ -51,6 +52,21 @@ class dirsrv::config
         creates => "${::dirsrv::params::config_dir}/slapd-${serveridentifier}",
         path => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin' ],
         require => File['dirsrv-silent-install.inf'],
+    }
+
+    notify { "$allow_anonymous_access": }
+
+    # Configure anonymous access
+    ldap_entry { 'cn=config':
+        ensure      => present,
+        host        => 'localhost',
+        port        => $ldap_port,
+        username    => $rootdn,
+        password    => $rootdn_pwd,
+        ssl         => false,
+        attributes  => { nsslapd-allow-anonymous-access => $allow_anonymous_access },
+        require     => Exec['dirsrv-setup-ds-admin'],
+        notify      => Class['dirsrv::service'],
     }
 
 }
