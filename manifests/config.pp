@@ -54,8 +54,6 @@ class dirsrv::config
         require => File['dirsrv-silent-install.inf'],
     }
 
-    notify { "$allow_anonymous_access": }
-
     # Configure anonymous access
     ldap_entry { 'cn=config':
         ensure      => present,
