@@ -77,6 +77,8 @@
 # [*monitor_email*]
 #   Email address where local service monitoring software sends it's reports to.
 #   Defaults to global variable $::servermonitor.
+# [*backups*]
+#   A hash of dirsrv::backup resources
 #
 # == Authors
 #
@@ -108,7 +110,8 @@ class dirsrv
     $dirsrv_allow_ipv6_address = '::1',
     $admin_srv_allow_ipv4_address = '127.0.0.1',
     $admin_srv_allow_ipv6_address = '::1',
-    $monitor_email = $::servermonitor
+    $monitor_email = $::servermonitor,
+    $backups = {}
 
 ) inherits dirsrv::params
 {
@@ -162,5 +165,8 @@ if hiera('manage_dirsrv', 'true') != 'false' {
             port => $admin_port,
         }
     }
+
+    # Create dirsrv::backup resources
+    create_resources('dirsrv::backup', $backups)
 }
 }

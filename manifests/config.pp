@@ -67,4 +67,7 @@ class dirsrv::config
         notify      => Class['dirsrv::service'],
     }
 
+    class { 'dirsrv::config::backup':
+        rootdn_pwd => $rootdn_pwd,        
+    }
 }
