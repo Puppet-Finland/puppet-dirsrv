@@ -12,7 +12,7 @@
 #
 # In theory Puppet could just run "setup-ds-admin" again with the "-u" flag to 
 # reconfigure some aspects of 389-ds. As doing so could potentially break the 
-# installation, so the process is not automated at this point. Cleanup after a 
+# installation the process is not automated at this point. Cleanup after a 
 # disaster would involve lots of manual work or the complete removal of 389-ds 
 # packages, files and directories.
 #
@@ -33,7 +33,9 @@
 #   Whether or not to manage LDAP configuration. Valid values 'yes' and 'no'. 
 #   Defaults to 'no'.
 # [*serveridentifier*]
-#   Identifier for the Directory Server instance. Defaults to $::hostname.
+#   Identifier for the Directory Server instance. Defaults to $::hostname. Note 
+#   that the identifier "can contain only alphanumeric characters and the 
+#   following: #%:@_-"
 # [*ldap_port*]
 #   Directory Server (LDAP) port. Defaults to 389.
 # [*suffix*]
@@ -52,13 +54,22 @@
 # [*config_directory_admin_id*]
 #   Admin user for the Configuration Directory. Defaults to 'admin'.
 # [*config_directory_admin_pwd*]
-#   Password for the Configuration Directory admin user. No default value.
+#   Password for the Configuration Directory admin user. It seems that this 
+#   needs to match the value of $server_admin_pwd. No default value.
+# [*admin_bind_ip*]
+#   The IP-address (interface) the Admin Server should bind to. Defaults to the 
+#   result of a DNS query with the node's $::fqdn, which may or may not work. If 
+#   in doubt you can set this to '127.0.0.1' and change it later. Alternatively 
+#   you can provision the server first, check the interface IP and manually 
+#   configure this parameter to match it.
 # [*admin_port*]
 #   The port on which the Admin Server listens. Defaults to 9830.
 # [*server_admin_id*]
 #   Admin username for the Admin Server. Defaults to 'admin'.
 # [*server_admin_pwd*]
-#   Password for the Admin Server admin user. No default value.
+#   Password for the Admin Server admin user. It seems that this needs to match 
+#   the value of $config_directory_admin_pwd or the silent installer will fail. 
+#   No default value.
 # [*allow_anonymous_access*]
 #   Level of anonymous access to allow. Valid values 'on', 'off' and 'rootdse'. 
 #   Defaults to 'rootdse'.
@@ -118,6 +129,7 @@ class dirsrv
 # Rationale for this is explained in init.pp of the sshd module
 if hiera('manage_dirsrv', 'true') != 'false' {
 
+    include dirsrv::prequisites
     include dirsrv::install
 
     if $manage_config == 'yes' {

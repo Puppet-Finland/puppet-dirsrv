@@ -1,6 +1,6 @@
 {
   "name": "puppetfinland-dirsrv",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Puppet-Finland team",
   "license": "BSD license",
   "summary": "Setup 389 Directory Server",
@@ -11,6 +11,7 @@
     { "name": "puppetfinland/localbackups", "version_requirement": ">= 0.5.0" },
     { "name": "puppetfinland/monit", "version_requirement": ">=0.5.0" },
     { "name": "puppetfinland/packetfilter", "version_requirement": ">= 0.5.0" },
-    { "name": "datacentred/ldap", "version_requirements": ">= 0.2.3" },
+    { "name": "puppetfinland/ruby", "version_requirement": ">= 0.1.0" },
+    { "name": "datacentred/ldap", "version_requirements": ">= 0.2.3" }
   ]
 }
