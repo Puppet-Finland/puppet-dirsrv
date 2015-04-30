@@ -5,6 +5,8 @@
 #
 class dirsrv::params {
 
+    include ::os::params
+
     case $::osfamily {
         default: { fail("Unsupported operating system: ${::osfamily}") }
         'Debian': {
@@ -14,12 +16,12 @@ class dirsrv::params {
             $suite_spot_group = 'dirsrv'
             $piddir = '/var/run/dirsrv'
             $dir_service_name = 'dirsrv'
-            $dir_service_start = "/usr/sbin/service $dir_service_name start"
-            $dir_service_stop = "/usr/sbin/service $dir_service_name stop"
+            $dir_service_start = "/usr/sbin/service ${dir_service_name} start"
+            $dir_service_stop = "/usr/sbin/service ${dir_service_name} stop"
             $admin_service_name = 'dirsrv-admin'
-            $admin_service_start = "/usr/sbin/service $admin_service_name start"
-            $admin_service_stop = "/usr/sbin/service $admin_service_name stop"
-            $admin_srv_pidfile = "$piddir/admin-serv.pid"
+            $admin_service_start = "/usr/sbin/service ${admin_service_name} start"
+            $admin_service_stop = "/usr/sbin/service ${admin_service_name} stop"
+            $admin_srv_pidfile = "${piddir}/admin-serv.pid"
         }
     }
 }

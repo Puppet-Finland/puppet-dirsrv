@@ -1,7 +1,7 @@
 [General]
 FullMachineName=<%= fqdn %>
-SuiteSpotUserID=<%= scope.lookupvar('dirsrv::params::suite_spot_user_id') %>
-SuiteSpotGroup=<%= scope.lookupvar('dirsrv::params::suite_spot_group') %>
+SuiteSpotUserID=<%= scope['dirsrv::params::suite_spot_user_id'] %>
+SuiteSpotGroup=<%= scope['dirsrv::params::suite_spot_group'] %>
 AdminDomain=<%= domain %>
 ConfigDirectoryAdminID=<%= config_directory_admin_id %>
 ConfigDirectoryAdminPwd=<%= config_directory_admin_pwd %>

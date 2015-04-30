@@ -12,7 +12,7 @@
 #
 # == Parameters
 #
-# [*status*]
+# [*ensure*]
 #   Status of the backup job. Either 'present' or 'absent'. Defaults to 
 #   'present'.
 # [*serveridentifier*]
@@ -38,10 +38,10 @@
 # 
 define dirsrv::backup
 (
-    $status = 'present',
     $serveridentifier,
     $suffix,
     $rootdn,
+    $ensure = 'present',
     $output_dir = '/var/backups/local/dirsrv',
     $hour = '01',
     $minute = '05',
@@ -50,18 +50,18 @@ define dirsrv::backup
 )
 {
 
-    include dirsrv::params
+    include ::dirsrv::params
 
     $cron_command = "db2ldif-online -D \"${rootdn}\" -j \"${::dirsrv::params::config_dir}/manager-pass\" -Z ${serveridentifier} -a \"${output_dir}/${serveridentifier}.ldif\" -s \"${suffix}\" > /dev/null"
 
     cron { "dirsrv-backup-${serveridentifier}-cron":
-        ensure => $status,
-        command => $cron_command,
-        user => root,
-        hour => $hour,
-        minute => $minute,
-        weekday => $weekday,
+        ensure      => $ensure,
+        command     => $cron_command,
+        user        => $::os::params::adminuser,
+        hour        => $hour,
+        minute      => $minute,
+        weekday     => $weekday,
         environment => [ 'PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin', "MAILTO=${email}" ],
-        require => Class['dirsrv::config::backup'],
+        require     => Class['dirsrv::config::backup'],
     }
 }

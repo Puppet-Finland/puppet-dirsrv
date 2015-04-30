@@ -29,9 +29,12 @@
 #
 # == Parameters
 #
+# [*manage*]
+#   Whether to manage Directory Server with Puppet or not. Valid values are 
+#   'yes' (default) and 'no'.
 # [*manage_config*]
-#   Whether or not to manage LDAP configuration. Valid values 'yes' and 'no'. 
-#   Defaults to 'no'.
+#   Whether or not to manage Directory Server _configuration_ with Puppet. Valid 
+#   values 'yes' and 'no'. Defaults to 'no'.
 # [*serveridentifier*]
 #   Identifier for the Directory Server instance. Defaults to $::hostname. Note 
 #   that the identifier "can contain only alphanumeric characters and the 
@@ -103,16 +106,17 @@
 #
 class dirsrv
 (
+    $manage = 'yes',
     $manage_config = 'no',
     $serveridentifier = $::hostname,
     $ldap_port = 389,
     $suffix,
     $rootdn = 'cn=Directory Manager',
     $rootdn_pwd,
-    $config_directory_ldap_url = "ldap://localhost:389/o=NetscapeRoot",
+    $config_directory_ldap_url = 'ldap://localhost:389/o=NetscapeRoot',
     $config_directory_admin_id = 'admin',
     $config_directory_admin_pwd,
-    $admin_bind_ip = '',
+    $admin_bind_ip = undef,
     $admin_port = 9830,
     $server_admin_id = 'admin',
     $server_admin_pwd,
@@ -126,55 +130,53 @@ class dirsrv
 
 ) inherits dirsrv::params
 {
-# Rationale for this is explained in init.pp of the sshd module
-if hiera('manage_dirsrv', 'true') != 'false' {
+if $manage == 'yes' {
 
-    include dirsrv::prequisites
-    include dirsrv::install
+    include ::dirsrv::prequisites
+    include ::dirsrv::install
 
     if $manage_config == 'yes' {
 
-        class { 'dirsrv::config':
-            serveridentifier => $serveridentifier,
-            ldap_proto => $ldap_proto,
-            ldap_port => $ldap_port,
-            suffix => $suffix,
-            rootdn => $rootdn,
-            rootdn_pwd => $rootdn_pwd,
-            config_directory_ldap_url => $config_directory_ldap_url,
-            config_directory_admin_id => $config_directory_admin_id,
+        class { '::dirsrv::config':
+            serveridentifier           => $serveridentifier,
+            ldap_port                  => $ldap_port,
+            suffix                     => $suffix,
+            rootdn                     => $rootdn,
+            rootdn_pwd                 => $rootdn_pwd,
+            config_directory_ldap_url  => $config_directory_ldap_url,
+            config_directory_admin_id  => $config_directory_admin_id,
             config_directory_admin_pwd => $config_directory_admin_pwd,
-            admin_bind_ip => $admin_bind_ip,
-            admin_port => $admin_port,
-            server_admin_id => $server_admin_id,
-            server_admin_pwd => $server_admin_pwd,
-            allow_anonymous_access => $allow_anonymous_access,
+            admin_bind_ip              => $admin_bind_ip,
+            admin_port                 => $admin_port,
+            server_admin_id            => $server_admin_id,
+            server_admin_pwd           => $server_admin_pwd,
+            allow_anonymous_access     => $allow_anonymous_access,
         }
     }
 
-    include dirsrv::service
+    include ::dirsrv::service
 
     if tagged('monit') {
-        class { 'dirsrv::monit':
+        class { '::dirsrv::monit':
             serveridentifier => $serveridentifier,
-            monitor_email => $monitor_email,
+            monitor_email    => $monitor_email,
         }
     }
 
     if tagged('packetfilter') {
 
-        include ldap
+        include ::ldap
 
-        class { 'ldap::packetfilter':
+        class { '::ldap::packetfilter':
             allow_ipv4_address => $dirsrv_allow_ipv4_address,
             allow_ipv6_address => $dirsrv_allow_ipv6_address,
-            allow_ports => $ldap_port,
+            allow_ports        => $ldap_port,
         }
 
-        class { 'dirsrv::packetfilter::admin':
+        class { '::dirsrv::packetfilter::admin':
             allow_ipv4_address => $admin_srv_allow_ipv4_address,
             allow_ipv6_address => $admin_srv_allow_ipv6_address,
-            port => $admin_port,
+            port               => $admin_port,
         }
     }
 

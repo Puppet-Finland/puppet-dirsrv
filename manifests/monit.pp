@@ -13,11 +13,11 @@ class dirsrv::monit
 {
     monit::fragment { "dirsrv-dirsrv-${serveridentifier}.monit":
         modulename => 'dirsrv',
-        basename => 'dirsrv',
+        basename   => 'dirsrv',
     }
 
     monit::fragment { 'dirsrv-admin-srv.monit':
         modulename => 'dirsrv',
-        basename => 'admin-srv',
+        basename   => 'admin-srv',
     }
 }

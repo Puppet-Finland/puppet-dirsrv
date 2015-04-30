@@ -14,30 +14,33 @@ class dirsrv::packetfilter::admin
 ) inherits dirsrv::params
 {
 
+    $source_v4 = $allow_ipv4_address ? {
+        'any'   => undef,
+        default => $allow_ipv4_address,
+    }
+
+    $source_v6 = $allow_ipv6_address ? {
+        'any'   => undef,
+        default => $allow_ipv6_address,
+    }
+
     # IPv4 rules
     firewall { '013 ipv4 accept dirsrv admin port':
         provider => 'iptables',
-        chain => 'INPUT',
-        proto => 'tcp',
-        port => $port,
-        source => $allow_ipv4_address ? {
-            'any' => undef,
-            default => $allow_ipv4_address,
-        },
-        action => 'accept'
+        chain    => 'INPUT',
+        proto    => 'tcp',
+        port     => $port,
+        source   => $source_v4,
+        action   => 'accept'
     }
 
     # IPv6 rules
     firewall { '013 ipv6 accept dirsrv admin port':
         provider => 'ip6tables',
-        chain => 'INPUT',
-        proto => 'tcp',
-        port => $port,
-        source => $allow_ipv6_address ? {
-            'any' => undef,
-            default => $allow_ipv6_address,
-        },
-        action => 'accept',
+        chain    => 'INPUT',
+        proto    => 'tcp',
+        port     => $port,
+        source   => $source_v6,
+        action   => 'accept',
     }
-
 }

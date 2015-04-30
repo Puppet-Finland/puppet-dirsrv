@@ -22,3 +22,6 @@ support for RedHat derivatives would probably be slightly more challenging.
 
 For details see [params.pp](manifests/params.pp).
 
+# TODO
+
+* Make backup directory location changeable

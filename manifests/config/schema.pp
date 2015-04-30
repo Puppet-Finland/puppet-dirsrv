@@ -14,15 +14,15 @@ define dirsrv::config::schema
     $basename=$modulename
 )
 {
-    include dirsrv::params
+    include ::dirsrv::params
 
     file { "${modulename}-${basename}.ldif":
         ensure  => present,
         name    => "${::dirsrv::params::config_dir}/slapd-${::dirsrv::config::serveridentifier}/schema/${basename}.ldif",
         content => template("${modulename}/${basename}.ldif.erb"),
-        owner   => "${::dirsrv::params::suite_spot_user_id}",
-        group   => "${::dirsrv::params::suite_spot_group}",
-        mode    => 600,
+        owner   => $::dirsrv::params::suite_spot_user_id,
+        group   => $::dirsrv::params::suite_spot_group,
+        mode    => '0600',
         require => Class['dirsrv::config'],
         notify  => Class['dirsrv::service'],
     }
