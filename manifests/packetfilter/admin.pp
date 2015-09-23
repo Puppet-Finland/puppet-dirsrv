@@ -29,7 +29,7 @@ class dirsrv::packetfilter::admin
         provider => 'iptables',
         chain    => 'INPUT',
         proto    => 'tcp',
-        port     => $port,
+        dport    => $port,
         source   => $source_v4,
         action   => 'accept'
     }
@@ -39,7 +39,7 @@ class dirsrv::packetfilter::admin
         provider => 'ip6tables',
         chain    => 'INPUT',
         proto    => 'tcp',
-        port     => $port,
+        dport    => $port,
         source   => $source_v6,
         action   => 'accept',
     }
