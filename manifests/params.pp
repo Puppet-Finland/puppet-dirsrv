@@ -16,12 +16,20 @@ class dirsrv::params {
             $suite_spot_group = 'dirsrv'
             $piddir = '/var/run/dirsrv'
             $dir_service_name = 'dirsrv'
-            $dir_service_start = "/usr/sbin/service ${dir_service_name} start"
-            $dir_service_stop = "/usr/sbin/service ${dir_service_name} stop"
             $admin_service_name = 'dirsrv-admin'
-            $admin_service_start = "/usr/sbin/service ${admin_service_name} start"
-            $admin_service_stop = "/usr/sbin/service ${admin_service_name} stop"
             $admin_srv_pidfile = "${piddir}/admin-serv.pid"
         }
+    }
+
+    # Parameters for the directory server (dirsrv) are managed in service.pp and 
+    # monit.pp because on systemd distros there can be several dirsrv instances 
+    # running, and it is therefore impossible to define a static string for the 
+    # service commands.
+    if str2bool($::has_systemd) {
+        $admin_service_start = "${::os::params::systemctl} start ${admin_service_name}"
+        $admin_service_stop = "${::os::params::systemctl} stop ${admin_service_name}"
+    } else {
+        $admin_service_start = "${::os::params::service_cmd} ${admin_service_name} start"
+        $admin_service_stop = "${::os::params::service_cmd} ${admin_service_name} stop"
     }
 }

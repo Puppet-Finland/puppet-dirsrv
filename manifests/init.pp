@@ -6,7 +6,7 @@
 # point:
 #
 # - Creating or monitoring additional Directory Server instances is not 
-#   supported
+#   supported, although adding that support would be fairly easy
 # - Creating (separate) Config Directory Server instances is not supported
 # - Updating the Directory/Admin Server configuration is not supported
 #
@@ -154,7 +154,9 @@ if $manage == 'yes' {
         }
     }
 
-    include ::dirsrv::service
+    class { '::dirsrv::service':
+        serveridentifier => $serveridentifier,
+    }
 
     if tagged('monit') {
         class { '::dirsrv::monit':

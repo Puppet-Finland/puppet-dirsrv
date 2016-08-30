@@ -3,10 +3,20 @@
 #
 # Enable dirsrv service
 #
-class dirsrv::service inherits dirsrv::params {
+class dirsrv::service
+(
+    $serveridentifier
+
+) inherits dirsrv::params {
+
+    if str2bool($::has_systemd) {
+        $service_name = "${::dirsrv::params::dir_service_name}@${serveridentifier}"
+    } else {
+        $service_name = $::dirsrv::params::dir_service_name
+    }
 
     service { 'dirsrv-dirsrv':
-        name    => $::dirsrv::params::dir_service_name,
+        name    => $service_name,
         enable  => true,
         require => Class['dirsrv::install'],
     }
