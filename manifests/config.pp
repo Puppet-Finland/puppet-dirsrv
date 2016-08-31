@@ -6,19 +6,19 @@
 #
 class dirsrv::config
 (
-    $serveridentifier,
-    $ldap_port,
-    $suffix,
-    $rootdn,
-    $rootdn_pwd,
-    $config_directory_ldap_url,
-    $config_directory_admin_id,
-    $config_directory_admin_pwd,
-    $admin_bind_ip,
-    $admin_port,
-    $server_admin_id,
-    $server_admin_pwd,
-    $allow_anonymous_access
+    String  $serveridentifier,
+    Integer $ldap_port,
+    String  $suffix,
+    String  $rootdn,
+    String  $rootdn_pwd,
+    String  $config_directory_ldap_url,
+    String  $config_directory_admin_id,
+    String  $config_directory_admin_pwd,
+    String  $admin_bind_ip,
+    Integer $admin_port,
+    String  $server_admin_id,
+    String  $server_admin_pwd,
+    Enum['on','off','rootdse'] $allow_anonymous_access
 
 ) inherits dirsrv::params
 {

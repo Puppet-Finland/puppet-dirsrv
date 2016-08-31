@@ -31,10 +31,10 @@
 #
 # [*manage*]
 #   Whether to manage Directory Server with Puppet or not. Valid values are 
-#   'yes' (default) and 'no'.
+#   true (default) and false.
 # [*manage_config*]
 #   Whether or not to manage Directory Server _configuration_ with Puppet. Valid 
-#   values 'yes' and 'no'. Defaults to 'no'.
+#   values are true and false (default).
 # [*serveridentifier*]
 #   Identifier for the Directory Server instance. Defaults to $::hostname. Note 
 #   that the identifier "can contain only alphanumeric characters and the 
@@ -106,8 +106,8 @@
 #
 class dirsrv
 (
-    $manage = 'yes',
-    $manage_config = 'no',
+    Boolean $manage = true,
+    Boolean $manage_config = false,
     $serveridentifier = $::hostname,
     $ldap_port = 389,
     $suffix,
@@ -130,12 +130,12 @@ class dirsrv
 
 ) inherits dirsrv::params
 {
-if $manage == 'yes' {
+if $manage {
 
     include ::dirsrv::prequisites
     include ::dirsrv::install
 
-    if $manage_config == 'yes' {
+    if $manage_config {
 
         class { '::dirsrv::config':
             serveridentifier           => $serveridentifier,

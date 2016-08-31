@@ -10,8 +10,8 @@
 #
 define dirsrv::config::schema
 (
-    $modulename,
-    $basename=$modulename
+    String $modulename,
+    String $basename=$modulename
 )
 {
     include ::dirsrv::params

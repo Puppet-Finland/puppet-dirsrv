@@ -5,7 +5,7 @@
 #
 class dirsrv::service
 (
-    $serveridentifier
+    String $serveridentifier
 
 ) inherits dirsrv::params {
 

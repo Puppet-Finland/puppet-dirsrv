@@ -5,7 +5,7 @@
 #
 class dirsrv::config::backup
 (
-    $rootdn_pwd
+    String $rootdn_pwd
 
 ) inherits dirsrv::params
 {

@@ -6,8 +6,8 @@
 #
 class dirsrv::monit
 (
-    $serveridentifier,
-    $monitor_email
+    String $serveridentifier,
+    String $monitor_email
 
 ) inherits dirsrv::params
 {
