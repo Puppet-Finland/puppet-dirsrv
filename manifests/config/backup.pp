@@ -5,10 +5,14 @@
 #
 class dirsrv::config::backup
 (
-    String $rootdn_pwd
+    String $rootdn_pwd,
+    String $output_dir = '/var/backups/local'
 
 ) inherits dirsrv::params
 {
+
+    # Several other modules will attempt ensure that this same directory exists
+    ensure_resource('file', $output_dir, { 'ensure' => 'directory' })
 
     # Create the backup directory
     file { 'dirsrv-dirsrv':
@@ -17,7 +21,7 @@ class dirsrv::config::backup
         owner   => $::dirsrv::params::suite_spot_user_id,
         group   => $::os::params::admingroup,
         mode    => '0750',
-        require => Class['localbackups'],
+        require => File[$output_dir],
     }
 
     # Put the directory manager password to a file, so that cronjobs that error 
