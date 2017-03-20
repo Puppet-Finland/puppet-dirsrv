@@ -126,7 +126,7 @@ class dirsrv
     $admin_srv_allow_ipv4_address = '127.0.0.1',
     $admin_srv_allow_ipv6_address = '::1',
     $monitor_email = $::servermonitor,
-    $backups = {}
+    Hash $backups = {}
 
 ) inherits dirsrv::params
 {
