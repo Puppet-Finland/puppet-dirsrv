@@ -3,13 +3,25 @@
 
 forge 'https://forgeapi.puppetlabs.com'
 
-mod 'puppetlabs-stdlib'
+mod 'stahnma-epel'
 
-mod 'puppetfinland-tomcat',
-    :git => 'https://github.com/Puppet-Finland/puppet-module-tomcat.git'
+mod 'puppetfinland-ldap',
+    :git => 'https://github.com/Puppet-Finland/ldap.git'
+
+mod 'puppetfinland-os',
+    :git => 'https://github.com/Puppet-Finland/os.git'
 
 mod 'puppetfinland-packetfilter',
     :git => 'https://github.com/Puppet-Finland/packetfilter.git'
 
-mod 'puppetfinland-os',
-    :git => 'https://github.com/Puppet-Finland/os.git'
+mod 'puppetfinland-ruby',
+    :git => 'https://github.com/Puppet-Finland/puppet-ruby.git',
+    :tag => '0.3.3'
+
+mod 'puppetlabs-stdlib'
+
+mod 'puppetfinland-systemd',
+    :git => 'https://github.com/Puppet-Finland/puppet-systemd.git'
+
+mod 'puppetfinland-tomcat',
+    :git => 'https://github.com/Puppet-Finland/puppet-module-tomcat.git'
