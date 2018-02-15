@@ -8,7 +8,6 @@ class dirsrv::params {
     include ::os::params
 
     case $::osfamily {
-        default: { fail("Unsupported operating system: ${::osfamily}") }
         'Debian': {
             $package_name = '389-ds'
             $config_dir = '/etc/dirsrv'
@@ -19,6 +18,18 @@ class dirsrv::params {
             $admin_service_name = 'dirsrv-admin'
             $admin_srv_pidfile = "${piddir}/admin-serv.pid"
         }
+        'RedHat': {
+            $package_name = '389-ds-base'
+            $config_dir = '/etc/dirsrv'
+            $suite_spot_user_id = 'dirsrv'
+            $suite_spot_group = 'dirsrv'
+            $piddir = '/var/run/dirsrv'
+            $dir_service_name = 'dirsrv'
+            $admin_service_name = 'dirsrv-admin'
+            $admin_srv_pidfile = "${piddir}/admin-serv.pid"
+        }
+        default: { fail("Unsupported operating system: ${::osfamily}") }
+
     }
 
     # Parameters for the directory server (dirsrv) are managed in service.pp and 
