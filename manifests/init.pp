@@ -35,6 +35,12 @@
 # [*manage_config*]
 #   Whether or not to manage Directory Server _configuration_ with Puppet. Valid 
 #   values are true and false (default).
+# [*manage_monit*]
+#   Whether to manage monit configuration with Puppet. Valid values are
+#   true and false (default).
+# [*manage_packetfilter*]
+#   Whether to manage iptables/ip6tables rules with Puppet. Valid values are
+#   true and false (default).
 # [*serveridentifier*]
 #   Identifier for the Directory Server instance. Defaults to $::hostname. Note 
 #   that the identifier "can contain only alphanumeric characters and the 
@@ -108,6 +114,8 @@ class dirsrv
 (
     Boolean $manage = true,
     Boolean $manage_config = false,
+    Boolean $manage_monit = false,
+    Boolean $manage_packetfilter = false,
     $serveridentifier = $::hostname,
     $ldap_port = 389,
     $suffix,
@@ -158,14 +166,14 @@ if $manage {
         serveridentifier => $serveridentifier,
     }
 
-    if tagged('monit') {
+    if $manage_monit {
         class { '::dirsrv::monit':
             serveridentifier => $serveridentifier,
             monitor_email    => $monitor_email,
         }
     }
 
-    if tagged('packetfilter') {
+    if $manage_packetfilter {
 
         include ::ldap
 
