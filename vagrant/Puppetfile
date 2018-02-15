@@ -8,6 +8,9 @@ mod 'stahnma-epel'
 mod 'puppetfinland-ldap',
     :git => 'https://github.com/Puppet-Finland/ldap.git'
 
+mod 'puppetfinland-monit',
+    :git => 'https://github.com/Puppet-Finland/monit.git'
+
 mod 'puppetfinland-os',
     :git => 'https://github.com/Puppet-Finland/os.git'
 
