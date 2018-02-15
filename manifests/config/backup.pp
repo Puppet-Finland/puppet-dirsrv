@@ -11,7 +11,10 @@ class dirsrv::config::backup
 ) inherits dirsrv::params
 {
 
-    # Several other modules will attempt ensure that this same directory exists
+    # Ensure that backup directory is present
+    if $output_dir == '/var/backups/local' {
+        ensure_resource('file', '/var/backups', { 'ensure' => 'directory' })
+    }
     ensure_resource('file', $output_dir, { 'ensure' => 'directory' })
 
     # Create the backup directory
