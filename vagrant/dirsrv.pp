@@ -6,6 +6,7 @@ include ::packetfilter::endpoint
 include ::monit
 
 class { '::dirsrv':
+    manage_config                => true,
     manage_monit                 => true,
     manage_packetfilter          => true,
     serveridentifier             => 'dirsrv',
