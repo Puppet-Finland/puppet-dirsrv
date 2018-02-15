@@ -9,7 +9,7 @@ class { '::dirsrv':
     manage_config                => true,
     manage_monit                 => true,
     manage_packetfilter          => true,
-    serveridentifier             => 'dirsrv',
+    serveridentifier             => 'vagrant',
     suffix                       => 'dc=example,dc=org',
     rootdn_pwd                   => 'vagrant',
     server_admin_pwd             => 'vagrant',
