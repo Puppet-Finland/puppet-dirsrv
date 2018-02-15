@@ -25,22 +25,24 @@ class dirsrv::packetfilter::admin
     }
 
     # IPv4 rules
-    firewall { '013 ipv4 accept dirsrv admin port':
+    @firewall { '013 ipv4 accept dirsrv admin port':
         provider => 'iptables',
         chain    => 'INPUT',
         proto    => 'tcp',
         dport    => $port,
         source   => $source_v4,
-        action   => 'accept'
+        action   => 'accept',
+        tag      => 'default',
     }
 
     # IPv6 rules
-    firewall { '013 ipv6 accept dirsrv admin port':
+    @firewall { '013 ipv6 accept dirsrv admin port':
         provider => 'ip6tables',
         chain    => 'INPUT',
         proto    => 'tcp',
         dport    => $port,
         source   => $source_v6,
         action   => 'accept',
+        tag      => 'default',
     }
 }
