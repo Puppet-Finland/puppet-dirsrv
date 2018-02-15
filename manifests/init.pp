@@ -175,9 +175,7 @@ if $manage {
 
     if $manage_packetfilter {
 
-        include ::ldap
-
-        class { '::ldap::packetfilter':
+        class { '::dirsrv::packetfilter::dirsrv':
             allow_ipv4_address => $dirsrv_allow_ipv4_address,
             allow_ipv6_address => $dirsrv_allow_ipv6_address,
             allow_ports        => $ldap_port,

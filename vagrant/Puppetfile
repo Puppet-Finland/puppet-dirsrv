@@ -5,8 +5,8 @@ forge 'https://forgeapi.puppetlabs.com'
 
 mod 'stahnma-epel'
 
-mod 'puppetfinland-ldap',
-    :git => 'https://github.com/Puppet-Finland/ldap.git'
+mod 'datacentred-ldap',
+    :git => 'https://github.com/Puppet-Finland/datacentred-ldap.git'
 
 mod 'puppetfinland-monit',
     :git => 'https://github.com/Puppet-Finland/monit.git'
