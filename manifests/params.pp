@@ -9,10 +9,10 @@ class dirsrv::params {
 
     case $::osfamily {
         'Debian': {
-            # Nothing here yet
+            $setup_ds_admin = '/usr/sbin/setup-ds-admin'
         }
         'RedHat': {
-            # Nothing here yet
+            $setup_ds_admin = '/usr/sbin/setup-ds-admin.pl'
         }
         default: { fail("Unsupported operating system: ${::osfamily}") }
     }

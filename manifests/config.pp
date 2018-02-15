@@ -47,7 +47,7 @@ class dirsrv::config
 
     # Run the silent install
     exec { 'dirsrv-setup-ds-admin':
-        command => "setup-ds-admin -s -f ${silent_install_inf}",
+        command => "${::dirsrv::params::setup_ds_admin} -s -f ${silent_install_inf}",
         creates => "${::dirsrv::params::config_dir}/slapd-${serveridentifier}",
         path    => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin' ],
         require => File['dirsrv-silent-install.inf'],
