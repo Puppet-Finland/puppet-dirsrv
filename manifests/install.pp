@@ -5,9 +5,8 @@
 #
 class dirsrv::install inherits dirsrv::params {
 
-    package { 'dirsrv-389-ds':
+    package { [ $::dirsrv::params::base_package_name, $::dirsrv::params::admin_package_name ]:
         ensure  => installed,
-        name    => $::dirsrv::params::package_name,
         require => Class['dirsrv::prequisites'],
     }
 }
