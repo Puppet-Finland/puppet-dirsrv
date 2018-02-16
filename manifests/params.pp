@@ -17,8 +17,7 @@ class dirsrv::params {
         default: { fail("Unsupported operating system: ${::osfamily}") }
     }
 
-    $base_package_name = '389-ds-base'
-    $admin_package_name = '389-admin'
+    $metapackage_name = '389-ds'
     $config_dir = '/etc/dirsrv'
     $suite_spot_user_id = 'dirsrv'
     $suite_spot_group = 'dirsrv'

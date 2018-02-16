@@ -41,6 +41,8 @@
 # [*manage_packetfilter*]
 #   Whether to manage iptables/ip6tables rules with Puppet. Valid values are
 #   true and false (default).
+# [*manage_epel*]
+#   Manage EPEL using this module. Valid values are true (default) and false.
 # [*serveridentifier*]
 #   Identifier for the Directory Server instance. Defaults to $::hostname. Note 
 #   that the identifier "can contain only alphanumeric characters and the 
@@ -120,6 +122,7 @@ class dirsrv
     Boolean $manage_config = false,
     Boolean $manage_monit = false,
     Boolean $manage_packetfilter = false,
+    $manage_epel = true,
     $serveridentifier = $::hostname,
     $ldap_port = 389,
     $rootdn = 'cn=Directory Manager',
@@ -140,8 +143,9 @@ class dirsrv
 {
 if $manage {
 
-    include ::dirsrv::prequisites
-    include ::dirsrv::install
+    class { '::dirsrv::install':
+        manage_epel => $manage_epel,
+    }
 
     if $manage_config {
 

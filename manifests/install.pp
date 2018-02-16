@@ -3,10 +3,31 @@
 #
 # Install 389 Directory Server
 #
-class dirsrv::install inherits dirsrv::params {
+class dirsrv::install
+(
+    $manage_epel
 
-    package { [ $::dirsrv::params::base_package_name, $::dirsrv::params::admin_package_name ]:
+) inherits dirsrv::params
+{
+
+    if $::osfamily == 'RedHat' {
+        if $manage_epel {
+            include ::epel
+        }
+        # This module depends on EPEL even if it does not include it
+        $require = [ Class['::epel'], Package['rubygem-net-ldap'] ]
+    } else {
+        $require = Package['rubygem-net-ldap']
+    }
+
+    package { 'rubygem-net-ldap':
+        ensure   => 'present',
+        name     => 'net-ldap',
+        provider => 'puppet_gem',
+    }
+
+    package { $::dirsrv::params::metapackage_name:
         ensure  => installed,
-        require => Class['dirsrv::prequisites'],
+        require => $require,
     }
 }
