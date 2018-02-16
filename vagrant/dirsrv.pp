@@ -20,4 +20,5 @@ class { '::dirsrv':
     dirsrv_allow_ipv6_address    => '::1',
     admin_srv_allow_ipv4_address => '0.0.0.0',
     admin_srv_allow_ipv6_address => '::1',
+    allow_anonymous_access       => 'on',
 }
