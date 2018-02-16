@@ -10,7 +10,6 @@
     { "name": "puppetfinland/os", "version_requirement": ">= 0.5.6" },
     { "name": "puppetfinland/monit", "version_requirement": ">=0.5.0" },
     { "name": "puppetfinland/packetfilter", "version_requirement": ">= 0.5.0" },
-    { "name": "puppetfinland/ruby", "version_requirement": ">= 0.3.3" },
     { "name": "puppetfinland/systemd", "version_requirement": ">= 0.1.2" },
     { "name": "datacentred/ldap", "version_requirements": ">= 0.2.3" }
   ]
