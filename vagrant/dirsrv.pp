@@ -11,6 +11,7 @@ class { '::dirsrv':
     manage_packetfilter          => true,
     serveridentifier             => 'vagrant',
     suffix                       => 'dc=example,dc=org',
+    rootdn                       => 'cn=Directory Manager',
     rootdn_pwd                   => 'vagrant',
     server_admin_pwd             => 'vagrant',
     config_directory_admin_pwd   => 'vagrant',
