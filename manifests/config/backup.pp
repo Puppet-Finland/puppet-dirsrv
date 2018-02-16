@@ -24,7 +24,8 @@ class dirsrv::config::backup
         owner   => $::dirsrv::params::suite_spot_user_id,
         group   => $::os::params::admingroup,
         mode    => '0750',
-        require => File[$output_dir],
+        require => [ File[$output_dir], Exec['dirsrv-setup-ds-admin'] ]
+
     }
 
     # Put the directory manager password to a file, so that cronjobs that error 
