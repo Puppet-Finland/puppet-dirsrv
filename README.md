@@ -4,6 +4,18 @@ A Puppet module for managing 389 Directory Server
 
 # Module usage
 
+The simplest possible way to use this module is this:
+
+    class { '::dirsrv':
+        suffix                       => 'dc=example,dc=org',
+        rootdn_pwd                   => 'secret',
+        server_admin_pwd             => 'secret',
+        config_directory_admin_pwd   => 'secret',
+    }
+
+See [dirsrv.pp](vagrant/dirsrv.pp) used by Vagrant for a more complete example. 
+For further details have a look at the class documentation:
+
 * [Class: dirsrv](manifests/init.pp)
 * [Define: dirsrv::backup](manifests/backup.pp)
 
@@ -15,13 +27,10 @@ See [metadata.json](metadata.json).
 
 This module has been tested on
 
-* Ubuntu 14.04
+* CentOS 7
 
-Other Debian/Ubuntu variants should work with small modifications. Adding 
-support for RedHat derivatives would probably be slightly more challenging.
+Previous version of this module supported Ubuntu 14.04, but that platform is not 
+being tested right now.
 
 For details see [params.pp](manifests/params.pp).
 
-# TODO
-
-* Make backup directory location changeable
