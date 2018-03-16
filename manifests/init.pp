@@ -90,6 +90,8 @@
 # [*dirsrv_allow_ipv6_address*]
 #   IPv6 address/subnet from which to allow connections to the Directory Server. 
 #   Use 'any' for any address. Defaults to '::1'.
+# [*dirsrv_allow_ports*]
+#   Ports to open in the firewall. Defaults to [ 389, 636 ].
 # [*admin_srv_allow_ipv4_address*]
 #   IPv4 address/subnet from which to allow connections to the Admin Server. 
 #   Use 'any' for any address. Defaults to '127.0.0.1'.
@@ -134,6 +136,7 @@ class dirsrv
     $allow_anonymous_access = 'rootdse',
     $dirsrv_allow_ipv4_address = '127.0.0.1',
     $dirsrv_allow_ipv6_address = '::1',
+    $dirsrv_allow_ports = [ 389, 636 ],
     $admin_srv_allow_ipv4_address = '127.0.0.1',
     $admin_srv_allow_ipv6_address = '::1',
     $monitor_email = $::servermonitor,
@@ -182,7 +185,7 @@ if $manage {
         class { '::dirsrv::packetfilter::dirsrv':
             allow_ipv4_address => $dirsrv_allow_ipv4_address,
             allow_ipv6_address => $dirsrv_allow_ipv6_address,
-            allow_ports        => $ldap_port,
+            allow_ports        => $dirsrv_allow_ports,
         }
 
         class { '::dirsrv::packetfilter::admin':
