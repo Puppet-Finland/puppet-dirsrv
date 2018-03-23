@@ -10,6 +10,7 @@ Vagrant.configure("2") do |config|
     box.vm.network "private_network", ip: "192.168.21.100"
     box.vm.network "forwarded_port", guest: 9830, host: 19830
     box.vm.network "forwarded_port", guest: 389, host: 10389
+    box.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     box.vm.provision "shell" do |s|
       s.path = "vagrant/prepare.sh"
       s.args = ["-n", "dirsrv", "-f", "redhat", "-o", "el-7", "-b", "/home/vagrant"]
