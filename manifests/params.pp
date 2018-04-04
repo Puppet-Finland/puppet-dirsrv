@@ -10,9 +10,15 @@ class dirsrv::params {
     case $::osfamily {
         'Debian': {
             $setup_ds_admin = '/usr/sbin/setup-ds-admin'
+            $backup_dir_seluser = undef
+            $backup_dir_selrole = undef
+            $backup_dir_seltype = undef
         }
         'RedHat': {
             $setup_ds_admin = '/usr/sbin/setup-ds-admin.pl'
+            $backup_dir_seluser = 'unconfined_u'
+            $backup_dir_selrole = 'object_r'
+            $backup_dir_seltype = 'dirsrv_var_lib_t'
         }
         default: { fail("Unsupported operating system: ${::osfamily}") }
     }

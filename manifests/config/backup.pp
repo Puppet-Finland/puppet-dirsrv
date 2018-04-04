@@ -24,6 +24,9 @@ class dirsrv::config::backup
         owner   => $::dirsrv::params::suite_spot_user_id,
         group   => $::os::params::admingroup,
         mode    => '0750',
+        seluser => $::dirsrv::params::backup_dir_seluser,
+        selrole => $::dirsrv::params::backup_dir_selrole,
+        seltype => $::dirsrv::params::backup_dir_seltype,
         require => [ File[$output_dir], Exec['dirsrv-setup-ds-admin'] ]
 
     }
