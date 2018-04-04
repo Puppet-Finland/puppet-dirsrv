@@ -52,7 +52,7 @@ define dirsrv::backup
 
     include ::dirsrv::params
 
-    $cron_command = "db2ldif-online -D \"${rootdn}\" -j \"${::dirsrv::params::config_dir}/manager-pass\" -Z ${serveridentifier} -a \"${output_dir}/${serveridentifier}.ldif\" -s \"${suffix}\" > /dev/null"
+    $cron_command = "db2ldif.pl -D \"${rootdn}\" -j \"${::dirsrv::params::config_dir}/manager-pass\" -Z ${serveridentifier} -n userRoot -a \"${output_dir}/${serveridentifier}.ldif\" > /dev/null"
 
     cron { "dirsrv-backup-${serveridentifier}-cron":
         ensure      => $ensure,
