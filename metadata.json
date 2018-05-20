@@ -12,6 +12,10 @@
       "version_requirement": ">= 1.3.0"
     },
     {
+      "name": "puppetfinland/localbackups",
+      "version_requirement": ">= 0.5.2"
+    },
+    {
       "name": "puppetfinland/os",
       "version_requirement": ">= 0.5.6"
     },

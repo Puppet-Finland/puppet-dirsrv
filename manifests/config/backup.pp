@@ -12,10 +12,7 @@ class dirsrv::config::backup
 {
 
     # Ensure that backup directory is present
-    if $output_dir == '/var/backups/local' {
-        ensure_resource('file', '/var/backups', { 'ensure' => 'directory' })
-    }
-    ensure_resource('file', $output_dir, { 'ensure' => 'directory' })
+    include ::localbackups
 
     # Create the backup directory
     file { 'dirsrv-dirsrv':
