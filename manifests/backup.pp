@@ -38,15 +38,15 @@
 # 
 define dirsrv::backup
 (
-    String                        $serveridentifier,
-    String                        $suffix,
-    String                        $rootdn,
-    Enum['present','absent']      $ensure = 'present',
-    String                        $output_dir = '/var/backups/local/dirsrv',
-    Variant[String,Integer[0-24]] $hour = '01',
-    Variant[String,Integer[0-60]] $minute = '05',
-    Variant[String,Integer[0-7]]  $weekday = '*',
-    String                        $email = $::servermonitor
+    String                                                              $serveridentifier,
+    String                                                              $suffix,
+    String                                                              $rootdn,
+    Enum['present','absent']                                            $ensure = 'present',
+    String                                                              $output_dir = '/var/backups/local/dirsrv',
+    Variant[Array[String], Array[Integer[0-23]], String, Integer[0-23]] $hour = '01',
+    Variant[Array[String], Array[Integer[0-59]], String, Integer[0-59]] $minute = '05',
+    Variant[Array[String], Array[Integer[0-7]],  String, Integer[0-7]]  $weekday = '*',
+    String                                                              $email = $::servermonitor
 )
 {
 
