@@ -25,6 +25,9 @@
 # [*output_dir*]
 #   The directory where to output the files. Defaults to 
 #   '/var/backups/local/dirsrv'.
+# [*protocol*]
+#   Protocol with which to connect to the Directory Server. Valid values are 
+#   'STARTTLS', 'LDAPS', 'LDAPI', and 'LDAP'. Defaults to 'LDAP'.
 # [*hour*]
 #   Hour(s) when dirsrv gets run. Defaults to 01.
 # [*minute*]
@@ -43,6 +46,7 @@ define dirsrv::backup
     String                                                              $rootdn,
     Enum['present','absent']                                            $ensure = 'present',
     String                                                              $output_dir = '/var/backups/local/dirsrv',
+    Enum['STARTTLS','LDAPS','LDAPI','LDAP']                             $protocol = 'LDAP',
     Variant[Array[String], Array[Integer[0-23]], String, Integer[0-23]] $hour = '01',
     Variant[Array[String], Array[Integer[0-59]], String, Integer[0-59]] $minute = '05',
     Variant[Array[String], Array[Integer[0-7]],  String, Integer[0-7]]  $weekday = '*',
@@ -52,7 +56,7 @@ define dirsrv::backup
 
     include ::dirsrv::params
 
-    $cron_command = "db2ldif.pl -D \"${rootdn}\" -j \"${::dirsrv::params::config_dir}/manager-pass\" -Z ${serveridentifier} -n userRoot -a \"${output_dir}/${serveridentifier}.ldif\" > /dev/null"
+    $cron_command = "db2ldif.pl -D \"${rootdn}\" -j \"${::dirsrv::params::config_dir}/manager-pass\" -P ${protocol} -Z ${serveridentifier} -n userRoot -a \"${output_dir}/${serveridentifier}.ldif\" > /dev/null"
 
     cron { "dirsrv-backup-${serveridentifier}-cron":
         ensure      => $ensure,
