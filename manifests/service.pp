@@ -9,7 +9,7 @@ class dirsrv::service
 
 ) inherits dirsrv::params {
 
-    if str2bool($::has_systemd) {
+    if $::systemd {
         $service_name = "${::dirsrv::params::dir_service_name}@${serveridentifier}"
     } else {
         $service_name = $::dirsrv::params::dir_service_name

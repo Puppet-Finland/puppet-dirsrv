@@ -36,7 +36,7 @@ class dirsrv::params {
     # monit.pp because on systemd distros there can be several dirsrv instances 
     # running, and it is therefore impossible to define a static string for the 
     # service commands.
-    if str2bool($::has_systemd) {
+    if $::systemd {
         $admin_service_start = "${::os::params::systemctl} start ${admin_service_name}"
         $admin_service_stop = "${::os::params::systemctl} stop ${admin_service_name}"
     } else {

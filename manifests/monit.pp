@@ -11,7 +11,7 @@ class dirsrv::monit
 
 ) inherits dirsrv::params
 {
-    if str2bool($::has_systemd) {
+    if $::systemd {
         $dir_service_start = "${::os::params::systemctl} start ${::dirsrv::params::dir_service_name}@${serveridentifier}"
         $dir_service_stop = "${::os::params::systemctl} stop ${::dirsrv::params::dir_service_name}@${serveridentifier}"
     } else {

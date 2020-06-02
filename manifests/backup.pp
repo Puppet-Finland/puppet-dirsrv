@@ -56,7 +56,7 @@ define dirsrv::backup
 
     include ::dirsrv::params
 
-    $cron_command = "db2ldif.pl -D \"${rootdn}\" -j \"${::dirsrv::params::config_dir}/manager-pass\" -P ${protocol} -Z ${serveridentifier} -n userRoot -a \"${output_dir}/${serveridentifier}.ldif\" > /dev/null"
+    $cron_command = "db2ldif.pl -D \"${rootdn}\" -j \"${::dirsrv::params::config_dir}/manager-pass\" -P ${protocol} -Z ${serveridentifier} -n userRoot -a \"${output_dir}/${serveridentifier}.ldif\" > /dev/null" # lint:ignore:140chars
 
     cron { "dirsrv-backup-${serveridentifier}-cron":
         ensure      => $ensure,
