@@ -5,8 +5,6 @@
 #
 class dirsrv::params {
 
-    include ::os::params
-
     case $::osfamily {
         'Debian': {
             $setup_ds_admin = '/usr/sbin/setup-ds-admin'
@@ -36,11 +34,6 @@ class dirsrv::params {
     # monit.pp because on systemd distros there can be several dirsrv instances 
     # running, and it is therefore impossible to define a static string for the 
     # service commands.
-    if $::systemd {
-        $admin_service_start = "${::os::params::systemctl} start ${admin_service_name}"
-        $admin_service_stop = "${::os::params::systemctl} stop ${admin_service_name}"
-    } else {
-        $admin_service_start = "${::os::params::service_cmd} ${admin_service_name} start"
-        $admin_service_stop = "${::os::params::service_cmd} ${admin_service_name} stop"
-    }
+    $admin_service_start = "systemctl start ${admin_service_name}"
+    $admin_service_stop = "systemctl stop ${admin_service_name}"
 }

@@ -61,7 +61,7 @@ define dirsrv::backup
     cron { "dirsrv-backup-${serveridentifier}-cron":
         ensure      => $ensure,
         command     => $cron_command,
-        user        => $::os::params::adminuser,
+        user        => 'root',
         hour        => $hour,
         minute      => $minute,
         weekday     => $weekday,

@@ -39,8 +39,8 @@ class dirsrv::config
         ensure  => present,
         name    => $silent_install_inf,
         content => template('dirsrv/silent-install.inf.erb'),
-        owner   => $::os::params::adminuser,
-        group   => $::os::params::admingroup,
+        owner   => 'root',
+        group   => 'root',
         mode    => '0600',
         require => Class['dirsrv::install'],
     }

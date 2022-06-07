@@ -19,7 +19,7 @@ class dirsrv::config::backup
         ensure  => directory,
         name    => '/var/backups/local/dirsrv',
         owner   => $::dirsrv::params::suite_spot_user_id,
-        group   => $::os::params::admingroup,
+        group   => 'root',
         mode    => '0750',
         seluser => $::dirsrv::params::backup_dir_seluser,
         selrole => $::dirsrv::params::backup_dir_selrole,
@@ -34,7 +34,7 @@ class dirsrv::config::backup
         name    => "${::dirsrv::params::config_dir}/manager-pass",
         content => template('dirsrv/manager-pass.erb'),
         owner   => $::dirsrv::params::suite_spot_user_id,
-        group   => $::os::params::admingroup,
+        group   => 'root',
         mode    => '0750',
         require => Class['dirsrv::install'],
     }

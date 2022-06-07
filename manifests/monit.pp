@@ -11,13 +11,8 @@ class dirsrv::monit
 
 ) inherits dirsrv::params
 {
-    if $::systemd {
-        $dir_service_start = "${::os::params::systemctl} start ${::dirsrv::params::dir_service_name}@${serveridentifier}"
-        $dir_service_stop = "${::os::params::systemctl} stop ${::dirsrv::params::dir_service_name}@${serveridentifier}"
-    } else {
-        $dir_service_start = "${::os::params::service_cmd} ${::dirsrv::params::dir_service_name} start"
-        $dir_service_stop = "${::os::params::service_cmd} ${::dirsrv::params::dir_service_name} stop"
-    }
+    $dir_service_start = "systemctl start ${::dirsrv::params::dir_service_name}@${serveridentifier}"
+    $dir_service_stop = "systemctl stop ${::dirsrv::params::dir_service_name}@${serveridentifier}"
 
     monit::fragment { "dirsrv-dirsrv-${serveridentifier}.monit":
         modulename => 'dirsrv',
