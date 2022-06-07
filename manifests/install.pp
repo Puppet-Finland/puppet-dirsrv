@@ -27,7 +27,9 @@ class dirsrv::install
     }
 
     package { $::dirsrv::params::metapackage_name:
-        ensure  => installed,
-        require => $require,
+        ensure   => installed,
+        flavor   => 'default',
+        provider => 'dnfmodule',
+        require  => $require,
     }
 }

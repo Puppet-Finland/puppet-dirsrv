@@ -10,9 +10,12 @@ class dirsrv::config::backup
 
 ) inherits dirsrv::params
 {
-
-    # Ensure that backup directory is present
-    include ::localbackups
+    file { ['/var/backups', '/var/backups/local']:
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
 
     # Create the backup directory
     file { 'dirsrv-dirsrv':
