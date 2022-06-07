@@ -1,24 +1,26 @@
 # -*- mode: ruby -*-
-# vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
 
   config.vm.define "dirsrv" do |box|
-    box.vm.box = "centos/7"
-    box.vm.box_version = "1710.01"
-    box.vm.hostname = "dirsrv.local"
-    box.vm.network "private_network", ip: "192.168.21.100"
-    box.vm.network "forwarded_port", guest: 9830, host: 19830
-    box.vm.network "forwarded_port", guest: 389, host: 10389
-    box.vm.synced_folder ".", "/vagrant", type: "virtualbox"
-    box.vm.provision "shell" do |s|
-      s.path = "vagrant/prepare.sh"
-      s.args = ["-n", "dirsrv", "-f", "redhat", "-o", "el-7", "-b", "/home/vagrant"]
-    end
-    box.vm.provision "shell", inline: "puppet apply --modulepath /home/vagrant/modules /vagrant/vagrant/dirsrv.pp"
-    box.vm.provider "virtualbox" do |vb|
+    box.vm.box = "generic/rocky8"
+    box.vm.box_version = "3.6.14"
+    box.vm.hostname = 'dirsrv.vagrant.example.lan'
+    box.vm.provider 'virtualbox' do |vb|
       vb.gui = false
-      vb.memory = 1024
+      vb.memory = 1280
+      vb.customize ["modifyvm", :id, "--ioapic", "on"]
+      vb.customize ["modifyvm", :id, "--hpet", "on"]
     end
+    box.vbguest.installer_options = { allow_kernel_upgrade: true }
+    box.vm.network "private_network", ip: "192.168.59.217"
+    box.vm.synced_folder ".", "/vagrant"
+    box.vm.provision "shell", path: "vagrant/common.sh"
+    box.vm.provision "shell",
+      inline: "/opt/puppetlabs/bin/puppet apply /vagrant/vagrant/hosts.pp --modulepath=/vagrant/modules",
+      env: {  'FACTER_my_host': 'dirsrv.vagrant.example.lan',
+              'FACTER_my_ip': '192.168.59.175' }
+    box.vm.provision "shell",
+      inline: "/opt/puppetlabs/bin/puppet apply /vagrant/vagrant/dirsrv.pp --modulepath=/vagrant/modules"
   end
 end

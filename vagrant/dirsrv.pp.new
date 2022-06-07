@@ -1,0 +1,8 @@
+notify { 'Provisioning 389 Directory Server': }
+
+class { '::dirsrv':
+  suffix                       => 'dc=example,dc=org',
+  rootdn_pwd                   => 'secret',
+  server_admin_pwd             => 'secret',
+  config_directory_admin_pwd   => 'secret',
+}

@@ -1,14 +1,9 @@
-# This manifest is only used by Vagrant
-
-$servermonitor = 'root@localhost'
-
-include ::packetfilter::endpoint
-include ::monit
+notify { 'Provisioning 389 Directory Server': }
 
 class { '::dirsrv':
     manage_config                => true,
-    manage_monit                 => true,
-    manage_packetfilter          => true,
+    manage_monit                 => false,
+    manage_packetfilter          => false,
     serveridentifier             => 'vagrant',
     suffix                       => 'dc=example,dc=org',
     rootdn                       => 'cn=Directory Manager',
