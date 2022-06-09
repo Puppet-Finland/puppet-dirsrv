@@ -35,37 +35,33 @@
 # [*weekday*]
 #   Weekday(s) when dirsrv gets run. Defaults to * (all weekdays).
 # [*email*]
-#   Email address where notifications are sent. Defaults to top-scope variable
-#   $::servermonitor.
+#   Email address where notifications are sent.
 #
 # 
-define dirsrv::backup
-(
-    String                                                              $serveridentifier,
-    String                                                              $suffix,
-    String                                                              $rootdn,
-    Enum['present','absent']                                            $ensure = 'present',
-    String                                                              $output_dir = '/var/backups/local/dirsrv',
-    Enum['STARTTLS','LDAPS','LDAPI','LDAP']                             $protocol = 'LDAP',
-    Variant[Array[String], Array[Integer[0-23]], String, Integer[0-23]] $hour = '01',
-    Variant[Array[String], Array[Integer[0-59]], String, Integer[0-59]] $minute = '05',
-    Variant[Array[String], Array[Integer[0-7]],  String, Integer[0-7]]  $weekday = '*',
-    String                                                              $email = $::servermonitor
-)
-{
+define dirsrv::backup (
+  String                                                              $serveridentifier,
+  String                                                              $suffix,
+  String                                                              $rootdn,
+  String                                                              $email,
+  Enum['present','absent']                                            $ensure = 'present',
+  String                                                              $output_dir = '/var/backups/local/dirsrv',
+  Enum['STARTTLS','LDAPS','LDAPI','LDAP']                             $protocol = 'LDAP',
+  Variant[Array[String], Array[Integer[0-23]], String, Integer[0-23]] $hour = '01',
+  Variant[Array[String], Array[Integer[0-59]], String, Integer[0-59]] $minute = '05',
+  Variant[Array[String], Array[Integer[0-7]],  String, Integer[0-7]]  $weekday = '*',
+) {
+  include dirsrv::params
 
-    include ::dirsrv::params
+  $cron_command = "db2ldif.pl -D \"${rootdn}\" -j \"${facts['dirsrv::params::config_dir']}/manager-pass\" -P ${protocol} -Z ${serveridentifier} -n userRoot -a \"${output_dir}/${serveridentifier}.ldif\" > /dev/null" # lint:ignore:140chars
 
-    $cron_command = "db2ldif.pl -D \"${rootdn}\" -j \"${::dirsrv::params::config_dir}/manager-pass\" -P ${protocol} -Z ${serveridentifier} -n userRoot -a \"${output_dir}/${serveridentifier}.ldif\" > /dev/null" # lint:ignore:140chars
-
-    cron { "dirsrv-backup-${serveridentifier}-cron":
-        ensure      => $ensure,
-        command     => $cron_command,
-        user        => 'root',
-        hour        => $hour,
-        minute      => $minute,
-        weekday     => $weekday,
-        environment => [ 'PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin', "MAILTO=${email}" ],
-        require     => Class['dirsrv::config::backup'],
-    }
+  cron { "dirsrv-backup-${serveridentifier}-cron":
+    ensure      => $ensure,
+    command     => $cron_command,
+    user        => 'root',
+    hour        => $hour,
+    minute      => $minute,
+    weekday     => $weekday,
+    environment => ['PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin', "MAILTO=${email}"],
+    require     => Class['dirsrv::config::backup'],
+  }
 }

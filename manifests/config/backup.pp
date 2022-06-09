@@ -1,44 +1,43 @@
 #
-# == Class: dirsrv::config::backup
+# @summary
+#   Prepare for dirsrv backups
 #
-# Prepare for dirsrv backups
-#
-class dirsrv::config::backup
-(
-    String $rootdn_pwd,
-    String $output_dir = '/var/backups/local'
+class dirsrv::config::backup (
+  # lint:ignore:parameter_documentation
+  String $rootdn_pwd,
+  String $output_dir = '/var/backups/local'
+  # lint:endignore
 
-) inherits dirsrv::params
-{
-    file { ['/var/backups', '/var/backups/local']:
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755',
-    }
+) inherits dirsrv::params {
+  file { ['/var/backups', '/var/backups/local']:
+    ensure => 'directory',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
 
-    # Create the backup directory
-    file { 'dirsrv-dirsrv':
-        ensure  => directory,
-        name    => '/var/backups/local/dirsrv',
-        owner   => $::dirsrv::params::suite_spot_user_id,
-        group   => 'root',
-        mode    => '0750',
-        seluser => $::dirsrv::params::backup_dir_seluser,
-        selrole => $::dirsrv::params::backup_dir_selrole,
-        seltype => $::dirsrv::params::backup_dir_seltype,
-        require => Exec['dirsrv-dscreate'],
-    }
+  # Create the backup directory
+  file { 'dirsrv-dirsrv':
+    ensure  => directory,
+    name    => '/var/backups/local/dirsrv',
+    owner   => $dirsrv::params::suite_spot_user_id,
+    group   => 'root',
+    mode    => '0750',
+    seluser => $dirsrv::params::backup_dir_seluser,
+    selrole => $dirsrv::params::backup_dir_selrole,
+    seltype => $dirsrv::params::backup_dir_seltype,
+    require => Exec['dirsrv-dscreate'],
+  }
 
-    # Put the directory manager password to a file, so that cronjobs that error 
-    # out don't send it in plaintext.
-    file { 'dirsrv-manager-pass':
-        ensure  => present,
-        name    => "${::dirsrv::params::config_dir}/manager-pass",
-        content => template('dirsrv/manager-pass.erb'),
-        owner   => $::dirsrv::params::suite_spot_user_id,
-        group   => 'root',
-        mode    => '0750',
-        require => Class['dirsrv::install'],
-    }
+  # Put the directory manager password to a file, so that cronjobs that error 
+  # out don't send it in plaintext.
+  file { 'dirsrv-manager-pass':
+    ensure  => file,
+    name    => "${facts['dirsrv::params::config_dir']}/manager-pass",
+    content => template('dirsrv/manager-pass.erb'),
+    owner   => $dirsrv::params::suite_spot_user_id,
+    group   => 'root',
+    mode    => '0750',
+    require => Class['dirsrv::install'],
+  }
 }
