@@ -1,7 +1,0 @@
-### THIS FILE IS MANAGED BY PUPPET. ANY MANUAL CHANGES WILL GET OVERWRITTEN.
-
-check process dirsrv-admin-srv with pidfile <%= scope['dirsrv::params::admin_srv_pidfile'] %>
-    start program = "<%= scope['dirsrv::params::admin_service_start'] %>"
-    stop program = "<%= scope['dirsrv::params::admin_service_stop'] %>"
-    alert <%= scope['dirsrv::monit::monitor_email'] %> with reminder on 480 cycles
-

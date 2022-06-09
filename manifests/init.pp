@@ -35,9 +35,6 @@
 # [*manage_config*]
 #   Whether or not to manage Directory Server _configuration_ with Puppet. Valid 
 #   values are true and false (default).
-# [*manage_monit*]
-#   Whether to manage monit configuration with Puppet. Valid values are
-#   true and false (default).
 # [*manage_packetfilter*]
 #   Whether to manage iptables/ip6tables rules with Puppet. Valid values are
 #   true and false (default).
@@ -65,22 +62,7 @@
 # [*config_directory_admin_id*]
 #   Admin user for the Configuration Directory. Defaults to 'admin'.
 # [*config_directory_admin_pwd*]
-#   Password for the Configuration Directory admin user. It seems that this 
-#   needs to match the value of $server_admin_pwd. No default value.
-# [*admin_bind_ip*]
-#   The IP-address (interface) the Admin Server should bind to. Defaults to the 
-#   result of a DNS query with the node's $::fqdn, which may or may not work. If 
-#   in doubt you can set this to '127.0.0.1' and change it later. Alternatively 
-#   you can provision the server first, check the interface IP and manually 
-#   configure this parameter to match it.
-# [*admin_port*]
-#   The port on which the Admin Server listens. Defaults to 9830.
-# [*server_admin_id*]
-#   Admin username for the Admin Server. Defaults to 'admin'.
-# [*server_admin_pwd*]
-#   Password for the Admin Server admin user. It seems that this needs to match 
-#   the value of $config_directory_admin_pwd or the silent installer will fail. 
-#   No default value.
+#   Password for the Configuration Directory admin user.
 # [*allow_anonymous_access*]
 #   Level of anonymous access to allow. Valid values 'on', 'off' and 'rootdse'. 
 #   Defaults to 'rootdse'.
@@ -92,12 +74,6 @@
 #   Use 'any' for any address. Defaults to '::1'.
 # [*dirsrv_allow_ports*]
 #   Ports to open in the firewall. Defaults to [ 389, 636 ].
-# [*admin_srv_allow_ipv4_address*]
-#   IPv4 address/subnet from which to allow connections to the Admin Server. 
-#   Use 'any' for any address. Defaults to '127.0.0.1'.
-# [*admin_srv_allow_ipv6_address*]
-#   IPv6 address/subnet from which to allow connections to the Admin Server. 
-#   Use 'any' for any address. Defaults to '::1'.
 # [*monitor_email*]
 #   Email address where local service monitoring software sends it's reports to.
 #   Defaults to global variable $::servermonitor.
@@ -118,12 +94,10 @@ class dirsrv
 (
     $suffix,
     $rootdn_pwd,
-    $server_admin_pwd,
     $config_directory_admin_pwd,
     String $full_machine_name = $::fqdn,
     Boolean $manage = true,
     Boolean $manage_config = false,
-    Boolean $manage_monit = false,
     Boolean $manage_packetfilter = false,
     $manage_epel = true,
     $serveridentifier = $::hostname,
@@ -133,15 +107,10 @@ class dirsrv
     $rootdn = 'cn=Directory Manager',
     $config_directory_ldap_url = 'ldap://localhost:389/o=NetscapeRoot',
     $config_directory_admin_id = 'admin',
-    $admin_bind_ip = undef,
-    $admin_port = 9830,
-    $server_admin_id = 'admin',
     $allow_anonymous_access = 'rootdse',
     $dirsrv_allow_ipv4_address = '127.0.0.1',
     $dirsrv_allow_ipv6_address = '::1',
     $dirsrv_allow_ports = [ 389, 636 ],
-    $admin_srv_allow_ipv4_address = '127.0.0.1',
-    $admin_srv_allow_ipv6_address = '::1',
     $monitor_email = $::servermonitor,
     Hash $backups = {}
 
@@ -165,10 +134,6 @@ if $manage {
             config_directory_ldap_url   => $config_directory_ldap_url,
             config_directory_admin_id   => $config_directory_admin_id,
             config_directory_admin_pwd  => $config_directory_admin_pwd,
-            admin_bind_ip               => $admin_bind_ip,
-            admin_port                  => $admin_port,
-            server_admin_id             => $server_admin_id,
-            server_admin_pwd            => $server_admin_pwd,
             allow_anonymous_access      => $allow_anonymous_access,
             self_sign_cert              => $self_sign_cert,
             self_sign_cert_valid_months => $self_sign_cert_valid_months,
@@ -179,25 +144,11 @@ if $manage {
         serveridentifier => $serveridentifier,
     }
 
-    if $manage_monit {
-        class { '::dirsrv::monit':
-            serveridentifier => $serveridentifier,
-            monitor_email    => $monitor_email,
-        }
-    }
-
     if $manage_packetfilter {
-
         class { '::dirsrv::packetfilter::dirsrv':
             allow_ipv4_address => $dirsrv_allow_ipv4_address,
             allow_ipv6_address => $dirsrv_allow_ipv6_address,
             allow_ports        => $dirsrv_allow_ports,
-        }
-
-        class { '::dirsrv::packetfilter::admin':
-            allow_ipv4_address => $admin_srv_allow_ipv4_address,
-            allow_ipv6_address => $admin_srv_allow_ipv6_address,
-            port               => $admin_port,
         }
     }
 
