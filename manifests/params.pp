@@ -6,12 +6,6 @@
 class dirsrv::params {
 
     case $::osfamily {
-        'Debian': {
-            $dscreate = '/usr/sbin/dscreate'
-            $backup_dir_seluser = undef
-            $backup_dir_selrole = undef
-            $backup_dir_seltype = undef
-        }
         'RedHat': {
             $dscreate = '/usr/sbin/dscreate'
             $backup_dir_seluser = 'unconfined_u'
