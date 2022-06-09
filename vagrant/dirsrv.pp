@@ -7,7 +7,7 @@ class { '::dirsrv':
     serveridentifier             => 'vagrant',
     suffix                       => 'dc=example,dc=org',
     rootdn                       => 'cn=Directory Manager',
-    rootdn_pwd                   => 'vagrant',
+    rootdn_pwd                   => 'vagrant123',
     server_admin_id              => 'admin',
     server_admin_pwd             => 'vagrant',
     config_directory_admin_id    => 'admin',
@@ -18,4 +18,5 @@ class { '::dirsrv':
     admin_srv_allow_ipv4_address => '0.0.0.0/0',
     admin_srv_allow_ipv6_address => '::1',
     allow_anonymous_access       => 'on',
+    self_sign_cert               => true,
 }

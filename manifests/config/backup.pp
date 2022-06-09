@@ -27,7 +27,7 @@ class dirsrv::config::backup
         seluser => $::dirsrv::params::backup_dir_seluser,
         selrole => $::dirsrv::params::backup_dir_selrole,
         seltype => $::dirsrv::params::backup_dir_seltype,
-        require => Exec['dirsrv-setup-ds-admin'],
+        require => Exec['dirsrv-dscreate'],
     }
 
     # Put the directory manager password to a file, so that cronjobs that error 

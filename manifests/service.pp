@@ -9,11 +9,7 @@ class dirsrv::service
 
 ) inherits dirsrv::params {
 
-    if $::systemd {
-        $service_name = "${::dirsrv::params::dir_service_name}@${serveridentifier}"
-    } else {
-        $service_name = $::dirsrv::params::dir_service_name
-    }
+    $service_name = "${::dirsrv::params::dir_service_name}@${serveridentifier}"
 
     service { 'dirsrv-dirsrv':
         name    => $service_name,
@@ -21,9 +17,9 @@ class dirsrv::service
         require => Class['dirsrv::install'],
     }
 
-    service { 'dirsrv-admin-srv':
-        name    => $::dirsrv::params::admin_service_name,
-        enable  => true,
-        require => Class['dirsrv::install'],
-    }
+    #service { 'dirsrv-admin-srv':
+    #    name    => $::dirsrv::params::admin_service_name,
+    #    enable  => true,
+    #    require => Class['dirsrv::install'],
+    #}
 }

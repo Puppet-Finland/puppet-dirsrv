@@ -6,6 +6,7 @@
 #
 class dirsrv::config
 (
+    String  $full_machine_name,
     String  $serveridentifier,
     Integer $ldap_port,
     String  $suffix,
@@ -18,7 +19,9 @@ class dirsrv::config
     Integer $admin_port,
     String  $server_admin_id,
     String  $server_admin_pwd,
-    Enum['on','off','rootdse'] $allow_anonymous_access
+    Enum['on','off','rootdse'] $allow_anonymous_access,
+    Boolean $self_sign_cert,
+    Integer $self_sign_cert_valid_months,
 
 ) inherits dirsrv::params
 {
@@ -34,11 +37,23 @@ class dirsrv::config
 
     $silent_install_inf = "${::dirsrv::params::config_dir}/silent-install.inf"
 
+    $self_sign_cert_str = $self_sign_cert ? {
+      true    => 'True',
+      false   => 'False',
+    }
+
+    $silent_install_inf_params = {'full_machine_name'           => $full_machine_name,
+                                  'serveridentifier'            => $serveridentifier,
+                                  'ldap_port'                   => $ldap_port,
+                                  'rootdn_pwd'                  => $rootdn_pwd,
+                                  'self_sign_cert'              => $self_sign_cert_str,
+                                  'self_sign_cert_valid_months' => $self_sign_cert_valid_months, }
+
     # Copy over the inf file that drives silent installs
     file { 'dirsrv-silent-install.inf':
         ensure  => present,
         name    => $silent_install_inf,
-        content => template('dirsrv/silent-install.inf.erb'),
+        content => epp('dirsrv/silent-install.inf.epp', $silent_install_inf_params),
         owner   => 'root',
         group   => 'root',
         mode    => '0600',
@@ -46,8 +61,8 @@ class dirsrv::config
     }
 
     # Run the silent install
-    exec { 'dirsrv-setup-ds-admin':
-        command => "${::dirsrv::params::setup_ds_admin} -s -f ${silent_install_inf}",
+    exec { 'dirsrv-dscreate':
+        command => "${::dirsrv::params::dscreate} from-file ${silent_install_inf}",
         creates => "${::dirsrv::params::config_dir}/slapd-${serveridentifier}",
         path    => [ '/bin', '/sbin', '/usr/bin', '/usr/sbin' ],
         require => File['dirsrv-silent-install.inf'],
@@ -65,7 +80,7 @@ class dirsrv::config
         password   => $rootdn_pwd,
         ssl        => false,
         attributes => $attributes,
-        require    => Exec['dirsrv-setup-ds-admin'],
+        require    => Exec['dirsrv-dscreate'],
         notify     => Class['dirsrv::service'],
     }
 
