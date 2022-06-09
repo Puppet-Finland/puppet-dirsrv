@@ -103,6 +103,8 @@ class dirsrv
     $serveridentifier = $::hostname,
     Boolean $self_sign_cert = false,
     Integer $self_sign_cert_valid_months = 24,
+    Boolean $create_suffix_entry = false,
+    Boolean $sample_entries = false,
     $ldap_port = 389,
     $rootdn = 'cn=Directory Manager',
     $config_directory_ldap_url = 'ldap://localhost:389/o=NetscapeRoot',
@@ -137,6 +139,8 @@ if $manage {
             allow_anonymous_access      => $allow_anonymous_access,
             self_sign_cert              => $self_sign_cert,
             self_sign_cert_valid_months => $self_sign_cert_valid_months,
+            create_suffix_entry         => $create_suffix_entry,
+            sample_entries              => $sample_entries,
         }
     }
 

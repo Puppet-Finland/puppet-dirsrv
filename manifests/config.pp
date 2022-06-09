@@ -18,14 +18,27 @@ class dirsrv::config
     Enum['on','off','rootdse'] $allow_anonymous_access,
     Boolean $self_sign_cert,
     Integer $self_sign_cert_valid_months,
+    Boolean $create_suffix_entry,
+    Boolean $sample_entries,
 
 ) inherits dirsrv::params
 {
     $silent_install_inf = "${::dirsrv::params::config_dir}/silent-install.inf"
 
+    # Convert Puppet Booleans into a format that silent-install.inf understands
     $self_sign_cert_str = $self_sign_cert ? {
       true    => 'True',
       false   => 'False',
+    }
+
+    $create_suffix_entry_str = $create_suffix_entry ? {
+      true    => 'True',
+      false   => 'False',
+    }
+
+    $sample_entries_str = $sample_entries ? {
+      true    => 'yes',
+      false   => 'no',
     }
 
     $silent_install_inf_params = {'full_machine_name'           => $full_machine_name,
@@ -33,7 +46,10 @@ class dirsrv::config
                                   'ldap_port'                   => $ldap_port,
                                   'rootdn_pwd'                  => $rootdn_pwd,
                                   'self_sign_cert'              => $self_sign_cert_str,
-                                  'self_sign_cert_valid_months' => $self_sign_cert_valid_months, }
+                                  'self_sign_cert_valid_months' => $self_sign_cert_valid_months,
+                                  'create_suffix_entry'         => $create_suffix_entry_str,
+                                  'sample_entries'              => $sample_entries_str,}
+
 
     # Copy over the inf file that drives silent installs
     file { 'dirsrv-silent-install.inf':

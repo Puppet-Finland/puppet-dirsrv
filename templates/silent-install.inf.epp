@@ -44,7 +44,7 @@ instance_name = <%= $serveridentifier %>
 # ldapi (str)
 # Description: Sets the location of socket interface of the Directory Server.
 # Default value: /run/slapd-{instance_name}.socket 
-;ldapi = /run/slapd-{instance_name}.socket
+ldapi = /run/slapd-{instance_name}.socket
 
 # port (int)
 # Description: Sets the TCP port the instance uses for LDAP connections.
@@ -76,7 +76,7 @@ self_sign_cert_valid_months = <%= $self_sign_cert_valid_months %>
 # create_suffix_entry (bool)
 # Description: Set this parameter to "True" to create a generic root node entry for the suffix in the database.
 # Default value: False 
-create_suffix_entry = False
+create_suffix_entry = <%= $create_suffix_entry %>
 
 # require_index (bool)
 # Description: Set this parameter to "True" to refuse unindexed searches in this database.
@@ -86,7 +86,7 @@ require_index = False
 # sample_entries (str)
 # Description: Set this parameter to 'yes' to add latest version of sample entries to this database.  Or, use '001003006' to use the 1.3.6 version sample entries.  Use this option, for example, to create a database for testing purposes.
 # Default value: no 
-sample_entries = no
+sample_entries = <%= $sample_entries %>
 
 # suffix (str)
 # Description: Sets the root suffix stored in this database.  If you do not uncomment and set the suffix attribute the install process will NOT create the backend/suffix.  You can also create multiple backends/suffixes by duplicating this section.
