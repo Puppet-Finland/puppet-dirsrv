@@ -1,7 +1,8 @@
 #
-# == Class: dirsrv::service
+# @summary
+#   Enable dirsrv service
 #
-# Enable dirsrv service
+# @param serveridentifier
 #
 class dirsrv::service (
   String $serveridentifier
@@ -14,10 +15,4 @@ class dirsrv::service (
     enable  => true,
     require => Class['dirsrv::install'],
   }
-
-  #service { 'dirsrv-admin-srv':
-  #    name    => $::dirsrv::params::admin_service_name,
-  #    enable  => true,
-  #    require => Class['dirsrv::install'],
-  #}
 }
