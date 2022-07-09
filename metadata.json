@@ -6,6 +6,7 @@
   "license": "BSD-2-Clause",
   "source": "https://github.com/Puppet-Finland/puppet-dirsrv.git",
   "project_page": "https://github.com/Puppet-Finland/puppet-dirsrv",
+  "issues_url": "https://github.com/Puppet-Finland/puppet-dirsrv/issues",
   "dependencies": [
     {
       "name": "puppet/epel",
