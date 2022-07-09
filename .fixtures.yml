@@ -1,0 +1,12 @@
+---
+fixtures:
+  forge_modules:
+    epel:
+      repo: "puppet/epel"
+      ref: "4.1.0"
+    stdlib:
+      repo: "puppetlabs/stdlib"
+      ref: "8.1.0"
+    yumrepo_core:
+      repo: "puppetlabs/yumrepo_core"
+      ref: "1.1.0"

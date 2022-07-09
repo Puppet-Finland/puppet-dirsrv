@@ -6,9 +6,6 @@
 # @param manage_config
 #   Whether or not to manage Directory Server _configuration_ with Puppet. Valid 
 #   values are true and false (default).
-# @param manage_packetfilter
-#   Whether to manage iptables/ip6tables rules with Puppet. Valid values are
-#   true and false (default).
 # @param manage_epel
 #   Manage EPEL using this module. Valid values are true (default) and false.
 # @param full_machine_name
@@ -30,14 +27,6 @@
 # @param allow_anonymous_access
 #   Level of anonymous access to allow. Valid values 'on', 'off' and 'rootdse'. 
 #   Defaults to 'rootdse'.
-# @param dirsrv_allow_ipv4_address
-#   IPv4 address/subnet from which to allow connections to the Directory Server. 
-#   Use 'any' for any address. Defaults to '127.0.0.1'.
-# @param dirsrv_allow_ipv6_address
-#   IPv6 address/subnet from which to allow connections to the Directory Server. 
-#   Use 'any' for any address. Defaults to '::1'.
-# @param dirsrv_allow_ports
-#   Ports to open in the firewall. Defaults to [ 389, 636 ].
 # @param self_sign_cert
 #   Whether to create a self-signed cert for the directory server
 # @param self_sign_cert_valid_months
@@ -58,7 +47,6 @@ class dirsrv (
   String                  $full_machine_name = $facts['networking']['fqdn'],
   Boolean                 $manage = true,
   Boolean                 $manage_config = false,
-  Boolean                 $manage_packetfilter = false,
   Boolean                 $manage_epel = true,
   String                  $serveridentifier = $facts['networking']['hostname'],
   Boolean                 $self_sign_cert = false,
@@ -68,9 +56,6 @@ class dirsrv (
   Integer[1,65535]        $ldap_port = 389,
   String                  $rootdn = 'cn=Directory Manager',
   String                  $allow_anonymous_access = 'rootdse',
-  Stdlib::IP::Address::V4 $dirsrv_allow_ipv4_address = '127.0.0.1',
-  Stdlib::IP::Address::V6 $dirsrv_allow_ipv6_address = '::1',
-  Array[Integer[1,65535]] $dirsrv_allow_ports = [389, 636],
   Hash                    $backups = {},
   Optional[String]        $monitor_email = undef,
 
@@ -98,14 +83,6 @@ class dirsrv (
 
     class { 'dirsrv::service':
       serveridentifier => $serveridentifier,
-    }
-
-    if $manage_packetfilter {
-      class { 'dirsrv::packetfilter::dirsrv':
-        allow_ipv4_address => $dirsrv_allow_ipv4_address,
-        allow_ipv6_address => $dirsrv_allow_ipv6_address,
-        allow_ports        => $dirsrv_allow_ports,
-      }
     }
 
     # Create dirsrv::backup resources
