@@ -4,9 +4,26 @@ A Puppet module for managing 389 Directory Server.
 
 # Module usage
 
-See [vagrant/dirsrv.pp](vagrant/dirsrv.pp) for example usage.
+Example from Vagrant:
 
-For further details have a look at the class documentation:
+```
+class { 'dirsrv':
+  manage_config               => true,
+  serveridentifier            => 'vagrant',
+  suffix                      => 'dc=example,dc=org',
+  rootdn                      => 'cn=Directory Manager',
+  rootdn_pwd                  => 'vagrant123',
+  allow_anonymous_access      => 'on',
+  self_sign_cert              => true,
+  self_sign_cert_valid_months => 60,
+}
 
-* [Class: dirsrv](manifests/init.pp)
-* [Define: dirsrv::backup](manifests/backup.pp)
+dirsrv::backup { 'vagrant':
+  ensure        => 'present',
+  instance      => 'vagrant',
+  bind_dn       => 'cn=Directory Manager',
+  bind_password => 'vagrant123',
+}
+```
+
+For further details have a look at the class and define documentation.
