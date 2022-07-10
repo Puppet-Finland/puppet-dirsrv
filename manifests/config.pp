@@ -65,8 +65,4 @@ class dirsrv::config (
     path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
     require => File['dirsrv-silent-install.inf'],
   }
-
-  class { 'dirsrv::config::backup':
-    rootdn_pwd => $rootdn_pwd,
-  }
 }

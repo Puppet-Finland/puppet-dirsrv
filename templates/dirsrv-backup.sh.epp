@@ -1,0 +1,22 @@
+<%- | String $instance,
+      String $ldap_url,
+      String $bind_dn
+
+| %>
+#!/bin/sh
+#
+# Wrapper script for backing up 389 Directory Server
+set -e
+
+URL="<%= $ldap_url %>"
+INSTANCE=<%= $instance %>
+BIND_DN="<%= $bind_dn %>"
+PASSWORD_FILE="/etc/dirsrv/slapd-${INSTANCE}/backup-bind-pw"
+DUMP_BASEDIR="/var/lib/dirsrv/slapd-${INSTANCE}/bak"
+DUMP_DIR="/var/lib/dirsrv/slapd-${INSTANCE}/bak/current"
+
+# Remove old dumps
+rm -rf $DUMP_DIR $DUMP_DIR.bak
+
+# Dump the data
+dsconf --binddn "${BIND_DN}" --pwdfile "${PASSWORD_FILE}" $URL backup create current
