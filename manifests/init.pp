@@ -38,8 +38,6 @@
 #   Whether to add sample entries to the database. Mainly for use with Vagrant.
 # @param monitor_email
 #   Where (backup) cronjobs should send email
-# @param backups
-#   A hash of dirsrv::backup resources
 #
 class dirsrv (
   String                  $suffix,
@@ -56,7 +54,6 @@ class dirsrv (
   Integer[1,65535]        $ldap_port = 389,
   String                  $rootdn = 'cn=Directory Manager',
   String                  $allow_anonymous_access = 'rootdse',
-  Hash                    $backups = {},
   Optional[String]        $monitor_email = undef,
 
 ) inherits dirsrv::params {
@@ -84,8 +81,5 @@ class dirsrv (
     class { 'dirsrv::service':
       serveridentifier => $serveridentifier,
     }
-
-    # Create dirsrv::backup resources
-    create_resources('dirsrv::backup', $backups)
   }
 }
